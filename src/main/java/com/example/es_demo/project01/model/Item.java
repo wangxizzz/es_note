@@ -57,7 +57,23 @@ public class Item {
 
     /**
      * 图片地址
+     * 注意：index设置为false，表示es没有对其建立索引，如果利用搜索api搜索该列，是报错的。
      */
     @Field(index = false, type = FieldType.Keyword)
     private String images;
+
+    /**
+     * 新增一个索引字段，只需要增加一个bean属性即可。es会自动建立mapping关系
+     */
+    @Field(type = FieldType.Text, analyzer = "ik_max_word")
+    private String desc;
+
+    public Item(Long id, String title, String category, String brand, Double price, String images) {
+        this.id = id;
+        this.title = title;
+        this.category = category;
+        this.brand = brand;
+        this.price = price;
+        this.images = images;
+    }
 }

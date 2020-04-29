@@ -66,6 +66,7 @@ public class ElasticsearchApplicationTests {
         item.setBrand("苹果");
         item.setPrice(12999.0);
         item.setImages("https://www.apple.com/mac.png");
+        item.setDesc("笔记本超级好");
 
         Item item1 = new Item();
         item1.setId(9L);
@@ -74,6 +75,7 @@ public class ElasticsearchApplicationTests {
         item1.setBrand("马丁·福勒(Martin Fowler)");
         item1.setPrice(118.00);
         item1.setImages("http://product.dangdang.com/26913154.html");
+        item1.setDesc("重构的书很好");
 
         Item item2 = new Item();
         item2.setId(10L);
