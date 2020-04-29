@@ -60,7 +60,7 @@ public class ElasticsearchApplicationTests {
     @Test
     public void indexItem(){
         Item item = new Item();
-        item.setId(1L);
+        item.setId(8L);
         item.setTitle("MacBook Pro");
         item.setCategory("笔记本电脑");
         item.setBrand("苹果");
@@ -68,15 +68,15 @@ public class ElasticsearchApplicationTests {
         item.setImages("https://www.apple.com/mac.png");
 
         Item item1 = new Item();
-        item1.setId(2L);
-        item1.setTitle("重构 改善既有代码的设计");
+        item1.setId(9L);
+        item1.setTitle("重构 改善既有代码的设计程序");
         item1.setCategory("程序设计");
         item1.setBrand("马丁·福勒(Martin Fowler)");
         item1.setPrice(118.00);
         item1.setImages("http://product.dangdang.com/26913154.html");
 
         Item item2 = new Item();
-        item2.setId(3L);
+        item2.setId(10L);
         item2.setTitle("Python编程 从入门到实践");
         item2.setCategory("Python");
         item2.setBrand("埃里克·马瑟斯（Eric Matthes）");
@@ -84,7 +84,7 @@ public class ElasticsearchApplicationTests {
         item2.setImages("http://bang.dangdang.com/books/bestsellers/01.54.00.00.00.00-recent7-0-0-1-1");
 
         Item item3 = new Item();
-        item3.setId(4L);
+        item3.setId(11L);
         item3.setTitle("统计之美：人工智能时代的科学思维");
         item3.setCategory("数学");
         item3.setBrand("李舰");
@@ -92,7 +92,7 @@ public class ElasticsearchApplicationTests {
         item3.setImages("http://product.dangdang.com/26915070.html");
 
         Item item4 = new Item();
-        item4.setId(5L);
+        item4.setId(12L);
         item4.setTitle("机器学习");
         item4.setCategory("人工智能");
         item4.setBrand("周志华");
