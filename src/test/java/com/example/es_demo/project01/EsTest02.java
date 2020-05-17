@@ -76,7 +76,7 @@ public class EsTest02 {
         // 构建查询条件
         NativeSearchQueryBuilder queryBuilder = new NativeSearchQueryBuilder();
         // 添加基本的分词查询
-        queryBuilder.withQuery(QueryBuilders.matchQuery("title", "小米"));
+        queryBuilder.withQuery(QueryBuilders.termQuery("title", "小米"));
         // 执行搜索，获取结果(默认是分页查询)
         Page<Item> items = this.itemRepository.search(queryBuilder.build());
         // 打印总条数
@@ -92,13 +92,13 @@ public class EsTest02 {
      */
     @Test
     public void testQuery() {
-        String keyword = "程序";
+        String keyword = "人工";
         // 构建条件查询
         BoolQueryBuilder queryBuilder = QueryBuilders.boolQuery();
         // 给name字段更高的权重
-        queryBuilder.should(QueryBuilders.matchQuery("title", keyword).boost(3));
-        // description 默认权重 1 . termQuery是精确查找，当然也可以使用matchQuery，应该是根据字段的类型决定的
-        queryBuilder.should(QueryBuilders.termQuery("category", keyword));
+        queryBuilder.should(QueryBuilders.termQuery("title", keyword).boost(3));
+        // description 默认权重 1 . termQuery是过滤器精确查找，当然也可以使用matchQuery，应该是根据字段的类型决定的
+        queryBuilder.should(QueryBuilders.termQuery("category", "人工智能"));
         // 至少一个should条件满足
         queryBuilder.minimumShouldMatch(1);
 
