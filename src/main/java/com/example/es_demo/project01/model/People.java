@@ -17,7 +17,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Document(indexName = "myindex",type = "docs", shards = 1, replicas = 0)
+@Document(indexName = "peopleindex",type = "docs", shards = 1, replicas = 0)
 public class People {
     /**
      * @Description: @Id注解必须是springframework包下的
@@ -27,9 +27,13 @@ public class People {
     @Id
     private Long id;
 
-    @Field(type = FieldType.Text, analyzer = "ik_max_word")
+    @Field(type = FieldType.Keyword, analyzer = "ik_max_word")
     private List<String> likes;
 
     @Field(type = FieldType.Keyword)
+
     private List<Integer> ages;
+
+//    @Field(type = FieldType.Keyword)
+//    private String name;
 }

@@ -38,13 +38,14 @@ public class SearchApiTest {
         //构造search request .在这里无参，查询全部索引
         //SearchRequest searchRequest = new SearchRequest();
         SearchRequest searchRequest = new SearchRequest("item"); //指定posts索引
-        searchRequest.types("docs"); //指定doc类型
+        //searchRequest.types("docs"); //指定doc类型
 
         //大多数查询参数要写在searchSourceBuilder里
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder()
-//                .query(QueryBuilders.matchAllQuery())  //增加match_all的条件
-                .query(QueryBuilders.termQuery("title", "手机"))
-//                .query(QueryBuilders.termQuery("title.keyword", "手机"))  //利用keyword搜索
+				// ConstantScoreQueryBuilder 性能更好，适用于非搜索排名的场景
+                .query(QueryBuilders.constantScoreQuery(QueryBuilders.matchAllQuery()))  //增加match_all的条件
+//                .query(QueryBuilders.termQuery("category", "手机"))
+//                .query(QueryBuilders.termQuery("category.keyword", "手机"))  //利用keyword搜索
                 .from(0)
                 .size(10)
                 .timeout(new TimeValue(60, TimeUnit.SECONDS));   // 设置超时时间

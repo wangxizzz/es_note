@@ -7,6 +7,7 @@ import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.search.SearchType;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.index.query.MatchQueryBuilder;
+import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -33,14 +34,14 @@ public class ESPeopleTest {
     @Autowired
     private RestHighLevelClient client;
 
-    /**
+	/**
      * 批量新增
      */
     @Test
     public void indexBatch() {
         List<People> list = new ArrayList<>();
-        list.add(new People(1L, Lists.newArrayList("看书", "直播"), Lists.newArrayList(1, 2)));
-        list.add(new People(2L, Lists.newArrayList("二珂", "提莫"), Lists.newArrayList(100, 222)));
+        list.add(new People(3L, Lists.newArrayList("纳豆", "直播"), Lists.newArrayList(1, 2, 4,100,2,222)));
+        list.add(new People(4L, Lists.newArrayList("小缘喵", "啦啦啦"), Lists.newArrayList(100, 222)));
         // 接收对象集合，实现批量新增
         peopleRepository.saveAll(list);
     }
@@ -48,7 +49,8 @@ public class ESPeopleTest {
     @Test
     public void test01() {
         // 词条查询. title字段是text类型，因此通过分词可以匹配
-        MatchQueryBuilder queryBuilder = QueryBuilders.matchQuery("likes", "二珂");
+//        QueryBuilder queryBuilder = QueryBuilders.termQuery("likes.keyword", "二珂");
+        QueryBuilder queryBuilder = QueryBuilders.termQuery("ages", 222);
         // 执行查询
         Iterable<People> items = this.peopleRepository.search(queryBuilder);
         items.forEach(System.out::println);
@@ -56,13 +58,7 @@ public class ESPeopleTest {
 
     @Test
     public void test02() {
-//        SearchResponse response = client.prepareSearch("index1", "index2")
-//                .setTypes("type1", "type2")
-//                .setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
-//                .setQuery(QueryBuilders.termQuery("multi", "test"))                 // Query
-//                .setPostFilter(QueryBuilders.rangeQuery("age").from(12).to(18))     // Filter
-//                .setFrom(0).setSize(60).setExplain(true)
-//                .get();
+
     }
 
 }
