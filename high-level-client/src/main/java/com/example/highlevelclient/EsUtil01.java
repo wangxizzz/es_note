@@ -61,7 +61,9 @@ public class EsUtil01 {
      */
     public void insertBatch(String index, List<EsEntity> list) {
         BulkRequest request = new BulkRequest();
-        list.forEach(item -> request.add(new IndexRequest(index).id(item.getId())
+        list.forEach(item -> request.add(new IndexRequest(index)
+				// 不使用自定义id
+//				.id(item.getId())
                 .source(JSON.toJSONString(item.getData()), XContentType.JSON)
                 .timeout(new TimeValue(60, TimeUnit.SECONDS))));
         try {
@@ -146,29 +148,16 @@ public class EsUtil01 {
         }
     }
 
-    public static final String INDEX_NAME = "book-index";
+    public static final String INDEX_NAME = "people-index";
 
-    public static final String CREATE_INDEX = "{\n" +
-            "    \"properties\": {\n" +
-            "      \"id\":{\n" +
-            "        \"type\":\"integer\"\n" +
-            "      },\n" +
-            "      \"userId\":{\n" +
-            "        \"type\":\"integer\"\n" +
-            "      },\n" +
-            "      \"name\":{\n" +
-            "        \"type\":\"text\",\n" +
-            "        \"analyzer\": \"ik_max_word\",\n" +
-            "        \"search_analyzer\": \"ik_smart\"\n" +
-            "      },\n" +
-            "      \"url\":{\n" +
-            "        \"type\":\"text\",\n" +
-            "        \"index\": true,\n" +
-            "        \"analyzer\": \"ik_max_word\",\n" +
-            "        \"search_analyzer\": \"ik_smart\"\n" +
-            "      }\n" +
-            "    }\n" +
-            "  }";
+    public static final String CREATE_INDEX = "{\"properties\":{\"crowdId\":{\"type\":\"integer\"},"
+			+ "\"userId\":{\"type\":\"integer\"},\"name\":{\"type\":\"text\",\"analyzer\":\"ik_max_word\","
+			+ "\"search_analyzer\":\"ik_smart\"},\"city\":{\"type\":\"keyword\"},\"userSex\":{\"type\":\"keyword\"}}}";
+
+
+	public static void main(String[] args) {
+		System.out.println(CREATE_INDEX);
+	}
 
     /**
      * 初始化索引

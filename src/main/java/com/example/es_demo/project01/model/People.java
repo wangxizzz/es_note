@@ -27,13 +27,14 @@ public class People {
     @Id
     private Long id;
 
+    // 字符串termQuery需要加上 .keyword
     @Field(type = FieldType.Keyword, analyzer = "ik_max_word")
     private List<String> likes;
 
+    // 注意：数字类型查询不加 .keyword
     @Field(type = FieldType.Keyword)
-
     private List<Integer> ages;
 
-//    @Field(type = FieldType.Keyword)
-//    private String name;
+    @Field(type = FieldType.Text)
+    private String peopleName;
 }

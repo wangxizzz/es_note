@@ -43,9 +43,9 @@ public class SearchApiTest {
         //大多数查询参数要写在searchSourceBuilder里
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder()
 				// ConstantScoreQueryBuilder 性能更好，适用于非搜索排名的场景
-                .query(QueryBuilders.constantScoreQuery(QueryBuilders.matchAllQuery()))  //增加match_all的条件
+//                .query(QueryBuilders.constantScoreQuery(QueryBuilders.matchAllQuery()))  //增加match_all的条件
 //                .query(QueryBuilders.termQuery("category", "手机"))
-//                .query(QueryBuilders.termQuery("category.keyword", "手机"))  //利用keyword搜索
+                .query(QueryBuilders.termQuery("category.keyword", "手机"))  //利用keyword搜索
                 .from(0)
                 .size(10)
                 .timeout(new TimeValue(60, TimeUnit.SECONDS));   // 设置超时时间
@@ -53,6 +53,9 @@ public class SearchApiTest {
         searchRequest.source(searchSourceBuilder);
         SearchResponse response = restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
         SearchHit[] results = response.getHits().getHits();
+        if (results.length == 0) {
+			System.out.println("查询元素为空。。。。。");
+		}
         for(SearchHit hit : results){
 
             String sourceAsString = hit.getSourceAsString();

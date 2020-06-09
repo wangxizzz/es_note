@@ -1,15 +1,18 @@
 package com.example.highlevelclient;
 
-import org.apache.lucene.util.QueryBuilder;
+import com.alibaba.fastjson.JSON;
 import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.client.core.CountRequest;
 import org.elasticsearch.client.core.CountResponse;
+import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.ConstantScoreQueryBuilder;
+import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.index.query.RangeQueryBuilder;
+import org.elasticsearch.index.query.TermQueryBuilder;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.aggregations.AggregationBuilder;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
@@ -23,6 +26,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import javax.annotation.Resource;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -53,14 +57,15 @@ public class SearchApiTest01 {
 				//.query(QueryBuilders.termQuery("category.keyword", "手机"));
 		searchSourceBuilder.size(0);
 
-		AggregationBuilder aggregationBuilder = AggregationBuilders.terms("agg").field("category.keyword");
+		AggregationBuilder aggregationBuilder = AggregationBuilders.terms("AGG").field("name.keyword");
 		searchSourceBuilder.aggregation(aggregationBuilder);
 
-		SearchRequest searchRequest = new SearchRequest(index);
+		SearchRequest searchRequest = new SearchRequest("people-index");
 		searchRequest.source(searchSourceBuilder);
 
 		SearchResponse searchResponse = client.search(searchRequest, RequestOptions.DEFAULT);
-		Terms terms = searchResponse.getAggregations().get("agg");
+		System.out.println(searchSourceBuilder.toString());
+		Terms terms = searchResponse.getAggregations().get("AGG");
 		for (Terms.Bucket entry : terms.getBuckets()) {
 			groupMap.put(entry.getKey().toString(), entry.getDocCount());
 		}
@@ -85,6 +90,10 @@ public class SearchApiTest01 {
 		System.out.println(response.getCount());
 	}
 
+	/**
+	 * 范围查询
+	 * @throws IOException
+	 */
 	@Test
 	public void rangeQueryTest() throws IOException {
 		// 1.创建并设置SearchSourceBuilder对象
@@ -102,9 +111,48 @@ public class SearchApiTest01 {
 		displayResponse(searchResponse);
 	}
 
+	/**
+	 * 判断某个查询是否存在
+	 */
+	@Test
+	public void existTest() throws IOException {
+		index = "peopleindex";
+		// 1.创建并设置SearchSourceBuilder对象
+		SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+		// 查询条件--->生成DSL查询语句
+//		QueryBuilder likeBuilder = QueryBuilders.termQuery("likes.keyword", "二珂");
+		QueryBuilder ageBuilder = QueryBuilders.termQuery("ages", 222);
+		BoolQueryBuilder boolQueryBuilder = new BoolQueryBuilder()
+//				.must(likeBuilder)
+				.must(ageBuilder);
+
+		searchSourceBuilder.query(boolQueryBuilder);
+
+		SearchRequest searchRequest = new SearchRequest(index);
+		searchRequest.source(searchSourceBuilder);
+		SearchResponse searchResponse = client.search(searchRequest, RequestOptions.DEFAULT);
+		for (SearchHit hit : searchResponse.getHits().getHits()) {
+
+			Object likes = hit.getSourceAsMap().get("likes");
+			if (likes instanceof List) {
+				System.out.println("uuuuuuuu");
+			}
+			List<String> temp = (List) likes;
+			System.out.println(temp.get(0));
+
+			System.out.println(likes.toString());
+//			System.out.println(JSON.parse(likes.toString()));
+
+			System.out.println(JSON.parseArray("[\"二珂\",\"提莫\"]"));
+		}
+		//displayResponse(searchResponse);
+	}
 
 	private void displayResponse(SearchResponse response) {
 		SearchHit[] results = response.getHits().getHits();
+		if (results.length == 0) {
+			System.out.println("查询为空。。。。");
+		}
 		for(SearchHit hit : results){
 
 			String sourceAsString = hit.getSourceAsString();
