@@ -1,0 +1,13 @@
+{
+  "properties": {
+    "crowdId": {
+      "type": "long"
+    },
+    "userId": {
+      "type": "long"
+    },
+    "insertTime": {
+      "type": "date"
+    }
+  }
+}

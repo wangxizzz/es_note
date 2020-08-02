@@ -1,0 +1,25 @@
+{
+  "properties": {
+    "userId": {
+      "type": "long"
+    },
+    "username": {
+      "type": "keyword"
+    },
+    "city": {
+      "type": "keyword"
+    },
+    "userSex": {
+      "type": "keyword"
+    },
+    "userAge": {
+      "type": "integer"
+    },
+    "birthday": {
+      "type": "date"
+    },
+    "crowdIds": {
+      "type": "long"
+    }
+  }
+}

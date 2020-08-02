@@ -8,11 +8,9 @@ import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.client.core.CountRequest;
 import org.elasticsearch.client.core.CountResponse;
 import org.elasticsearch.index.query.BoolQueryBuilder;
-import org.elasticsearch.index.query.ConstantScoreQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.index.query.RangeQueryBuilder;
-import org.elasticsearch.index.query.TermQueryBuilder;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.aggregations.AggregationBuilder;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
@@ -48,29 +46,7 @@ public class SearchApiTest01 {
 	 *
 	 * @throws IOException
 	 */
-	@Test
-	public void groupByCountTest() throws IOException {
-		Map<String, Long> groupMap = new HashMap<>();
-		SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
-		searchSourceBuilder
-				.query(QueryBuilders.matchAllQuery());
-				//.query(QueryBuilders.termQuery("category.keyword", "手机"));
-		searchSourceBuilder.size(0);
 
-		AggregationBuilder aggregationBuilder = AggregationBuilders.terms("AGG").field("name.keyword");
-		searchSourceBuilder.aggregation(aggregationBuilder);
-
-		SearchRequest searchRequest = new SearchRequest("people-index");
-		searchRequest.source(searchSourceBuilder);
-
-		SearchResponse searchResponse = client.search(searchRequest, RequestOptions.DEFAULT);
-		System.out.println(searchSourceBuilder.toString());
-		Terms terms = searchResponse.getAggregations().get("AGG");
-		for (Terms.Bucket entry : terms.getBuckets()) {
-			groupMap.put(entry.getKey().toString(), entry.getDocCount());
-		}
-		System.out.println(groupMap);
-	}
 
 	/**
 	 * 统计符合某一查询的总数
