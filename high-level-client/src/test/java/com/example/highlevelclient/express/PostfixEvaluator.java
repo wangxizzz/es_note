@@ -7,6 +7,8 @@ import java.util.Stack;
 /**
  * @author wangxi created on 2020/9/19 21:24
  * @version v1.0
+ *
+ * 有问题
  */
 public class PostfixEvaluator {
     public static List<String> parseToSuffixExpression(List<String> expressionList) {
